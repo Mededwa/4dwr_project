@@ -8,6 +8,7 @@ function App() {
   const [playerData, setPlayerData] = useState({});
   const [mostPlayedData, setMostPlayedData] = useState({});
 
+  // Récupération des parties du joueur grâce au proxy
   function getPlayerGames(event) {
     axios
       .get("http://localhost:4000/past5Games", {
@@ -21,6 +22,7 @@ function App() {
       });
   }
 
+  // Récupération du profil du joueur grâce au proxy
   function getPlayerDatas(event) {
     axios
       .get("http://localhost:4000/playerProfile", {
@@ -34,6 +36,7 @@ function App() {
       });
   }
 
+  // Récupération des champions les plus joués grâce au proxy
   function getMostPlayed(event) {
     axios
       .get("http://localhost:4000/mostPlayed", {
@@ -47,8 +50,7 @@ function App() {
       });
   }
 
-  console.log(mostPlayedData);
-  console.log(gameList);
+  // Affichage de toutes les informations
   return (
     <div className="App">
       <h2>Welcome to our proxy</h2>
@@ -58,6 +60,7 @@ function App() {
       ></input>
       <button
         onClick={() => {
+          // On lance les fonctions quand on clique sur le bouton de recherche
           getPlayerDatas();
           getPlayerGames();
           getMostPlayed();
@@ -69,6 +72,8 @@ function App() {
         <h2>Profil</h2>
         <div class="profile">
           {JSON.stringify(playerData) !== "{}" ? (
+            // Affichage des informations de profile. L'icone est récupéré grâce à la banque de donnée de riot games sur l'url ddragon.
+            // La version la plus récente est 13.10.1. Si jamais le jeu est mis à jour, certaines images risquent de ne pas bien s'afficher.
             <>
               <p>{playerData.name}</p>
               <img
@@ -79,6 +84,7 @@ function App() {
                   playerData.profileIconId +
                   ".png"
                 }
+                alt="player profil pic"
               ></img>
               <p>Player level: {playerData.summonerLevel}</p>
             </>
@@ -88,6 +94,7 @@ function App() {
             </>
           )}
           {JSON.stringify(mostPlayedData) !== "{}" ? (
+            // Affichage des champions les plus joués et de leurs icones.
             <>
               <h2>Top 3 most played:</h2>
               <div className="champions-icons">
@@ -100,7 +107,7 @@ function App() {
                       className="champ"
                       id="1"
                       src={
-                        "https://cdn.communitydragon.org/11.21.1/champion/" +
+                        "https://cdn.communitydragon.org/13.10.1/champion/" +
                         mostPlayedData[0].championId +
                         "/square"
                       }
@@ -115,7 +122,7 @@ function App() {
                       className="champ"
                       id="2"
                       src={
-                        "https://cdn.communitydragon.org/11.21.1/champion/" +
+                        "https://cdn.communitydragon.org/13.10.1/champion/" +
                         mostPlayedData[1].championId +
                         "/square"
                       }
@@ -130,7 +137,7 @@ function App() {
                       className="champ"
                       id="3"
                       src={
-                        "https://cdn.communitydragon.org/11.21.1/champion/" +
+                        "https://cdn.communitydragon.org/13.10.1/champion/" +
                         mostPlayedData[2].championId +
                         "/square"
                       }
@@ -146,6 +153,7 @@ function App() {
         </div>
       </>
       {gameList.length !== 0 ? (
+        // Affichage des matchs
         <>
           {gameList.map((gameData, index) => (
             <>
@@ -157,6 +165,7 @@ function App() {
                     {gameData.info.participants
                       .slice(0, 5)
                       .map((data, participantIndex) => (
+                        // Les 5 premiers joueurs sont dans l'équipe bleu et les 5 derniers dans la rouge
                         <li class="player" key={participantIndex}>       
                           <img
                             width="50"
@@ -167,6 +176,7 @@ function App() {
                               data.championId +
                               "/square"
                             }
+                            alt="champ played"
                           ></img>
                           {data.summonerName}, KDA: {data.kills} / {data.deaths}{" "}
                           / {data.assists}
@@ -190,6 +200,7 @@ function App() {
                               data.championId +
                               "/square"
                             }
+                            alt="champ played"
                           ></img>
                           {data.summonerName}, KDA: {data.kills} / {data.deaths}{" "}
                           / {data.assists}
