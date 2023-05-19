@@ -28,8 +28,3 @@ jobs:
         run: |
           cd client
           npm install
-
-      - name: Start project server and client in parallel
-        run: |
-          npm install -g concurrently
-          concurrently "npm start" "cd client && npm start"
